@@ -3,19 +3,23 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
     {
         path: "/",
-        redirect: "/login",
+        component: () => import("@/components/board/List.vue"),
     },
     {
-        path: "/login",
-        component: () => import("@/views/LoginPage.vue"),
+        path: "/view/:id",
+        component: () => import("@/components/board/View.vue"),
     },
     {
-        path: "/signup",
-        component: () => import("@/views/SignupPage.vue"),
+        path: "/write",
+        component: () => import("@/components/board/Write.vue"),
+    },
+    {
+        path: "/edit/:id",
+        component: () => import("@/components/board/Edit.vue"),
     },
     {
         path: "/:pathMatch(.*)*",
-        component: () => import("@/views/NotFoundPage.vue"),
+        component: () => import("@/views/error/NotFoundPage.vue"),
     },
 ];
 
