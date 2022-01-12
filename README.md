@@ -1,6 +1,6 @@
 # vue-board
 
-뷰를 활용한 간단한 게시판 리포지토리입니다.
+JSON서버와 Vuejs를 활용한 간단한 게시판 리포지토리입니다.
 
 <table>
 <thead>
@@ -29,3 +29,4 @@
 </tr>
 </tbody>
 </table>
+![](readme/img.png)
