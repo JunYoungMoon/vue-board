@@ -16,7 +16,7 @@
                 ></textarea>
             </div>
             <button type="submit" class="btn">작성</button>
-            <button @click="$router.go(-1)">취소</button>
+            <button type="button" @click="$router.go(-1)">취소</button>
         </form>
     </div>
 </template>
@@ -38,13 +38,14 @@ export default {
                     title: this.title,
                     contents: this.contents,
                 });
-                console.log(response);
 
-                if (response.statusText === "Created") {
+                if (response.status === 201) {
                     await this.$router.push("/");
+                } else {
+                    throw "글쓰기 실패";
                 }
             } catch (error) {
-                console.log(error);
+                alert(error);
             }
         },
     },

@@ -2,9 +2,9 @@
     <div class="form-wrapper">
         <div>제목 : {{ title }}</div>
         <div>내용 : {{ contents }}</div>
-        <button @click="this.$router.push(`/edit/${id}`)">수정</button>
-        <button @click="remove()">삭제</button>
-        <button @click="$router.go(-1)">목록</button>
+        <button type="button" @click="this.$router.push(`/edit/${id}`)">수정</button>
+        <button type="button" @click="remove()">삭제</button>
+        <button type="button" @click="$router.push('/')">목록</button>
     </div>
 </template>
 
@@ -24,11 +24,13 @@ export default {
             try {
                 const response = await fetchDelete(this.id);
 
-                if (response.statusText === "OK") {
+                if (response.status === 200) {
                     await this.$router.push("/");
+                } else {
+                    throw "삭제실패";
                 }
             } catch (error) {
-                console.log(error);
+                alert(error);
             }
         },
     },
@@ -36,10 +38,14 @@ export default {
         try {
             this.id = this.$route.params.id;
             const response = await fetchView(this.id);
-            this.title = response.data.title;
-            this.contents = response.data.contents;
+            if (response.status === 200) {
+                this.title = response.data.title;
+                this.contents = response.data.contents;
+            } else {
+                throw "글 가져오기 실패";
+            }
         } catch (error) {
-            console.log(error);
+            alert(error);
         }
     },
 };

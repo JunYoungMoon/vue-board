@@ -10,6 +10,7 @@ const routes = [
         component: () => import("@/components/board/View.vue"),
     },
     {
+        name: "write",
         path: "/write",
         component: () => import("@/components/board/Write.vue"),
     },

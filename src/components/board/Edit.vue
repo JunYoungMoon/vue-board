@@ -16,7 +16,7 @@
                 ></textarea>
             </div>
             <button type="submit" class="btn">수정</button>
-            <button @click="$router.go(-1)">취소</button>
+            <button type="button" @click="$router.go(-1)">취소</button>
         </form>
     </div>
 </template>
@@ -44,11 +44,13 @@ export default {
                     contents: this.contents,
                 });
 
-                if (response.statusText === "OK") {
+                if (response.status === 200) {
                     await this.$router.push("/");
+                } else {
+                    throw "글수정 실패";
                 }
-            } catch (e) {
-                console.log(e);
+            } catch (error) {
+                alert(error);
             }
         },
     },
@@ -56,9 +58,13 @@ export default {
         try {
             const id = this.$route.params.id;
             const response = await fetchView(id);
-            this.setForm(response.data);
+            if (response.status === 200) {
+                this.setForm(response.data);
+            } else {
+                throw "글 가져오기 실패";
+            }
         } catch (error) {
-            console.log(error);
+            alert(error);
         }
     },
 };
