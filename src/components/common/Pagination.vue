@@ -5,14 +5,10 @@
             <li v-if="page > 1" @click="emitList(page - 1)"><a href="#">이전</a></li>
             <list v-for="item in pageList" :key="item">
                 <li @click="emitList(item)" v-if="item === page">
-                    <a href="#">
-                        <b>{{ item }}</b>
-                    </a>
+                    <b>{{ item }}</b>
                 </li>
                 <li @click="emitList(item)" v-else>
-                    <a href="#">
-                        {{ item }}
-                    </a>
+                    {{ item }}
                 </li>
             </list>
             <li v-if="page < totalPage" @click="emitList(page + 1)">
@@ -39,6 +35,19 @@ export default {
             type: Number,
             required: true,
         },
+        countPage: {
+            type: Number,
+            required: true,
+        },
+        countList: {
+            type: Number,
+            required: true,
+        },
+    },
+    watch: {
+        totalCount: function () {
+            this.pageCount(this.page, this.totalCount);
+        },
     },
     methods: {
         emitList(page) {
@@ -47,29 +56,22 @@ export default {
             this.$emit("emitList", page);
         },
         pageCount(page, totalCount) {
-            let countList = 5;
-            let countPage = 5;
-            let totalPage = Math.floor(totalCount / countList); //32 / 5 = 6.2
+            let totalPage = Math.floor(totalCount / this.countList);
 
-            //자투리 페이지 추가 32 % 5 = 2
-            if (totalCount % countList > 0) {
+            if (totalCount % this.countList > 0) {
                 totalPage++;
             }
 
             this.totalPage = totalPage;
 
-            // 현재 페이지 > 총페이지 갯수
             if (page > totalPage) {
                 page = totalPage;
             }
 
-            //시작 페이지
-            let startPage = Math.floor((page - 1) / 5) * 5 + 1;
+            let startPage = Math.floor((page - 1) / this.countPage) * this.countPage + 1;
 
-            //끝 페이지
-            let endPage = startPage + countPage - 1;
+            let endPage = startPage + this.countPage - 1;
 
-            //끝페이지 > 총페이지 갯수
             if (endPage > totalPage) {
                 endPage = totalPage;
             }
@@ -80,9 +82,6 @@ export default {
                 this.pageList.push(i);
             }
         },
-    },
-    created() {
-        this.emitList(1);
     },
 };
 </script>

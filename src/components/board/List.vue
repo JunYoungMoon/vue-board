@@ -8,12 +8,13 @@
             </li>
         </ul>
         <Pagination
-            v-if="totalCount !== 0"
             @emitList="setList"
             :totalCount="totalCount"
+            :countPage="countPage"
+            :countList="countList"
         ></Pagination>
         <br />
-        <button @click="$router.push('/write')">글쓰기</button>
+        <button type="button" @click="$router.push('write')">글쓰기</button>
     </div>
 </template>
 
@@ -27,15 +28,25 @@ export default {
         return {
             listItems: [],
             totalCount: 0,
-            page: 0,
+            page: 1,
+            countPage: 3,
+            countList: 10,
         };
     },
     methods: {
         async setList(page) {
-            this.page = page;
-            const response = await fetchList(page, 5);
-            this.totalCount = response.headers["x-total-count"];
-            this.listItems = response.data;
+            try {
+                this.page = page;
+                const response = await fetchList(page, this.countList);
+                if (response.status === 200) {
+                    this.totalCount = response.headers["x-total-count"];
+                    this.listItems = response.data;
+                } else {
+                    throw "리스트 불러오기 실패";
+                }
+            } catch (error) {
+                alert(error);
+            }
         },
     },
     created() {
