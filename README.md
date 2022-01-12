@@ -29,3 +29,4 @@ JSON서버와 Vuejs를 활용한 간단한 게시판 리포지토리입니다.
 </tr>
 </tbody>
 </table>
+![image](https://user-images.githubusercontent.com/35192352/149078682-ef513199-8271-4e62-bc98-d8591a8126c7.png)
