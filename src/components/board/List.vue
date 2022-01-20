@@ -7,12 +7,7 @@
                 </div>
             </li>
         </ul>
-        <Pagination
-            @emitList="setList"
-            :totalCount="totalCount"
-            :countPage="countPage"
-            :countList="countList"
-        ></Pagination>
+        <Pagination @emitList="setList" :pageObject="pageObject"></Pagination>
         <br />
         <button type="button" @click="$router.push('write')">글쓰기</button>
     </div>
@@ -27,19 +22,21 @@ export default {
     data() {
         return {
             listItems: [],
-            totalCount: 0,
             page: 1,
-            countPage: 3,
-            countList: 10,
+            pageObject: {
+                totalCount: 0,
+                countPage: 5,
+                countList: 10,
+            },
         };
     },
     methods: {
         async setList(page) {
             try {
                 this.page = page;
-                const response = await fetchList(page, this.countList);
+                const response = await fetchList(page, this.pageObject.countList);
                 if (response.status === 200) {
-                    this.totalCount = response.headers["x-total-count"];
+                    this.pageObject.totalCount = response.headers["x-total-count"];
                     this.listItems = response.data;
                 } else {
                     throw "리스트 불러오기 실패";
