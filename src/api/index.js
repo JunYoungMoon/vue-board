@@ -23,7 +23,7 @@ function fetchWrite(data) {
 
 //글수정
 function fetchEdit(id, data) {
-    return axios.put(`${process.env.VUE_APP_API_URL}/${id}`, data);
+    return axios.patch(`${process.env.VUE_APP_API_URL}/${id}`, data);
 }
 
 //글삭제
